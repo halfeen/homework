@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <title>Course</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<h1>Course</h1>
+	<form action="#" th:action="@{/savecourse}" th:object= ${course} method="post">
+		<p>Name: <input type="text" th:field="${course.name}"/></p>
+
+		<div style="clear: both; display: block; height: 10px;"></div>
+		<input type="submit" value="Save"/>
+		<input type="reset" value="Reset"/>
+	</form>
+
+    
+</body>
+</html>

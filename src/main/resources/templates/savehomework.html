@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <title>Homework</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<h1>Homework</h1>
+	<form action="#" th:action="@{/savehomework}" th:object= ${homework} method="post">
+		<p>Task: <input type="text" th:field="${homework.task}"/></p>
+		<p>Deadline: <input placeholder="pp.kk" type="text" th:field="${homework.deadline}"/></p>
+		<div style="clear: both; display: block; height: 10px;"></div>						
+		<label for="list">Course: </label>
+		<select id="list" th:field="*{course}" class="form-control">
+	    	<option th:each="course: ${courses}" th:value="${course.courseId}" th:text="${course.name}"></option>
+	  	</select>
+		<div style="clear: both; display: block; height: 10px;"></div>
+		<input type="submit" value="Save"/>
+		<input type="reset" value="Reset"/>
+	</form>
+
+    
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+	<title>Courses</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<h1>Courses</h1>
+	<table>
+		<tr>
+			<th> ID </th>
+			<th> Name </th>
+		</tr>
+		<tr th:each="course : ${courses}">
+			<td th:text="${course.courseId}">id</td>
+			<td th:text="${course.name}">name</td>
+			<td><a th:href="@{/deletecourse/{courseId}(courseId=${course.courseId})}">Delete</a></td>
+			<td><a th:href="@{/savecourse/{courseId}(courseId=${course.courseId})}">Edit</a></td>
+			
+		</tr>
+	</table>
+	<a href="/savecourse">Add course</a>
+	<a href="/homework">Homework</a>
+</body>
+</html>
