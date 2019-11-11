@@ -79,21 +79,23 @@ public class HomeworkController {
 		return "courselist";
 	}
 	
-	//Add new homework
-	/*@RequestMapping(value="/savehomework", method = RequestMethod.GET)
-	public String getNewHomeworkForm(Model model) {
-		//String username = principal.getName();
-		model.addAttribute("homework", new Homework()); 
-		model.addAttribute("courses", courseRepo.findAll());
-		return "savehomework";
-		
-	}*/
+	//Add new homework --> yksi monesta yrityksestä saada owner automaattisesti lisättyä
+	// Lisää löytyy Homework-luokasta
+	
+		/*@RequestMapping(value="/savehomework", method = RequestMethod.GET)
+		public String getNewHomeworkForm(Model model) {
+			//String username = principal.getName();
+			model.addAttribute("homework", new Homework()); 
+			model.addAttribute("courses", courseRepo.findAll());
+			return "savehomework";
+			
+		}*/
 	
 	//Add new homework
 	@RequestMapping(value="/savehomework", method = RequestMethod.GET)
 	public String getNewHomeworkForm(Model model, Principal principal) {
 		String username = principal.getName();
-		model.addAttribute("owner", username);
+		model.addAttribute("owner", username); //ei vissiin tee mitään(?)
 		model.addAttribute("homework", new Homework());
 		model.addAttribute("courses", courseRepo.findAll());
 		return "savehomework";
@@ -101,7 +103,7 @@ public class HomeworkController {
 	
 	//Save the homework
 	@RequestMapping(value="/savehomework", method = RequestMethod.POST)
-	public String saveNewHomework(Homework homework) {
+	public String saveNewHomework(@ModelAttribute Homework homework) {
 		homeworkRepo.save(homework);
 		return "redirect:userhomework";
 	}
@@ -117,12 +119,13 @@ public class HomeworkController {
 	//Save the course
     @PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value="/savecourse", method = RequestMethod.POST)
-	public String saveNewCourse(Course course) {
+	public String saveNewCourse(@ModelAttribute Course course) {
 		courseRepo.save(course);
 		return "redirect:courses";
 	}
 	
-	//Deleting homework
+	//Deleting homework --> jos adminilla poistaa koko listasta jotain, niin silloinkin
+    //redirectaa userhomeworkiin...
 	@RequestMapping(value="/deletehomework/{homeId}", method = RequestMethod.GET)
 	public String deleteHomework(@PathVariable("homeId") Long homeId) {
 		homeworkRepo.deleteById(homeId);
@@ -137,7 +140,7 @@ public class HomeworkController {
 		return "redirect:../courses";
 	}
 	
-	//Editing homework
+	//Editing homework --> jostain syystä luo silti uuden
 	@RequestMapping(value= "/savehomework/{homeId}")
 	public String saveHomework(@PathVariable("homeId") Long homeId, Model model) {
 		model.addAttribute("homework", homeworkRepo.findById(homeId));
@@ -145,7 +148,7 @@ public class HomeworkController {
 		return "savehomework";
 	}
 	
-	//Editing course
+	//Editing course --> luo myös uuden
     @PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value= "/savecourse/{courseId}")
 	public String saveCourse(@PathVariable("courseId") Long courseId, Model model) {

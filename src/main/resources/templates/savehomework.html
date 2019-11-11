@@ -8,6 +8,7 @@
 <body>
 	<h1>Homework</h1>
 	<form action="#" th:action="@{/savehomework}" th:object= ${homework} method="post">
+		<input type="hidden" th:field="${homework.homeId}"/>
 		<p>Task: <input type="text" th:field="${homework.task}"/></p>
 		<p>Deadline: <input placeholder="pp.kk" type="text" th:field="${homework.deadline}"/></p>
 		<p>Your username: <input type="text" th:action="@{/username}" th:field=${homework.owner}/></p>

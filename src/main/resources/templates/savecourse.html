@@ -8,6 +8,7 @@
 <body>
 	<h1>Course</h1>
 	<form action="#" th:action="@{/savecourse}" th:object= ${course} method="post">
+		<input type="hidden" th:field="${course.courseId}"/>
 		<p>Name: <input type="text" th:field="${course.name}"/></p>
 		
 		<div style="clear: both; display: block; height: 10px;"></div>

@@ -24,6 +24,8 @@ public class Homework {
 	private Long homeId;
 	private String task;
 	private String deadline;
+	
+	//@GeneratedValue(strategy=GenerationType.IDENTITY)...
 	private String owner;
 	
 	@ManyToOne
@@ -32,11 +34,6 @@ public class Homework {
 	
 	public Homework() {
 		super();
-	}
-	
-	public String getUsername(Principal principal) {
-		String username = principal.getName();
-		return username;
 	}
 
 	public Homework(Long homeId, String task, String deadline, Course course, String owner) {
@@ -98,7 +95,31 @@ public class Homework {
 		this.owner = owner;
 	}
 	
+	//lisää yritystä lisätä käyttäjä uuteen läksyyn 
+	public void setLoggedOwner1(String owner, Principal principal) {
+		String username = principal.getName();
+		this.owner = username;
+	}
+	
+	//osa yhdestä yrityksestä lisätä käyttäjä uuteen läksyyn...
+	public String getUsername(Principal principal) {
+		String username = principal.getName();
+		return username;
+	}
+	
+	//public Homework(String task, String deadline, Course course, String username) {
+	//	this.task = task;
+	//	this.deadline = deadline;
+	//	this.course = course;
+	//	this.owner = username;
+	//}
+	
+	public void setLoggedOwner2(String username) {
+		this.owner = username;
+	}
+	
 
+	
 	@Override
 	public String toString() {
 		return "Homework [homeId=" + homeId + ", task=" + task + ", deadline=" + deadline + ", course=" + course + ", student="+ owner + "]";
