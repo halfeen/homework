@@ -54,10 +54,10 @@ public class HomeworkController {
 	@RequestMapping(value = "/homework", method = RequestMethod.GET)
 	public String getHomework(Model model) {
 		model.addAttribute("homeworks", homeworkRepo.findAll());
-		return "/homeworklist";
+		return "homeworklist";
 	}
 	
-    //Check username
+    //Check username --> ei käytetä tällä hetkellä mihinkään
     @RequestMapping(value = "/username", method = RequestMethod.GET)
     @ResponseBody
     public String currentUserName(Principal principal) {
@@ -69,14 +69,14 @@ public class HomeworkController {
 	public String getStudentHomework(Model model, Principal principal) {
 		String username = principal.getName(); //get logged in username, eli esim student1
 		model.addAttribute("homeworks", homeworkRepo.findByOwner(username));
-		return "/userhomeworklist";
+		return "userhomeworklist";
 	}
 	
 	//Listing Courses
 	@RequestMapping(value = "/courses", method = RequestMethod.GET)
 	public String getCourses(Model model) {
 		model.addAttribute("courses", courseRepo.findAll());
-		return "/courselist";
+		return "courselist";
 	}
 	
 	//Add new homework
@@ -96,14 +96,14 @@ public class HomeworkController {
 		model.addAttribute("owner", username);
 		model.addAttribute("homework", new Homework());
 		model.addAttribute("courses", courseRepo.findAll());
-		return "/savehomework";
+		return "savehomework";
 	}
 	
 	//Save the homework
 	@RequestMapping(value="/savehomework", method = RequestMethod.POST)
 	public String saveNewHomework(Homework homework) {
 		homeworkRepo.save(homework);
-		return "redirect:/userhomework";
+		return "redirect:userhomework";
 	}
 	
 	//Add new course
@@ -111,7 +111,7 @@ public class HomeworkController {
 	@RequestMapping(value="/savecourse", method = RequestMethod.GET)
 	public String getNewCourseForm(Model model) {
 		model.addAttribute("course", new Course());
-		return "/savecourse";
+		return "savecourse";
 	}
 	
 	//Save the course
@@ -119,14 +119,14 @@ public class HomeworkController {
 	@RequestMapping(value="/savecourse", method = RequestMethod.POST)
 	public String saveNewCourse(Course course) {
 		courseRepo.save(course);
-		return "redirect:/courses";
+		return "redirect:courses";
 	}
 	
 	//Deleting homework
 	@RequestMapping(value="/deletehomework/{homeId}", method = RequestMethod.GET)
 	public String deleteHomework(@PathVariable("homeId") Long homeId) {
 		homeworkRepo.deleteById(homeId);
-		return "redirect:../userhomework";
+		return "redirect:..userhomework";
 	}
 	
 	//Deleting a course
@@ -134,7 +134,7 @@ public class HomeworkController {
 	@RequestMapping(value="/deletecourse/{courseId}", method = RequestMethod.GET)
 	public String deleteCourse(@PathVariable("courseId") Long courseId) {
 		courseRepo.deleteById(courseId);
-		return "redirect:../courses";
+		return "redirect:..courses";
 	}
 	
 	//Editing homework
@@ -142,7 +142,7 @@ public class HomeworkController {
 	public String saveHomework(@PathVariable("homeId") Long homeId, Model model) {
 		model.addAttribute("homework", homeworkRepo.findById(homeId));
 		model.addAttribute("courses", courseRepo.findAll());
-		return "/savehomework";
+		return "savehomework";
 	}
 	
 	//Editing course
@@ -150,7 +150,7 @@ public class HomeworkController {
 	@RequestMapping(value= "/savecourse/{courseId}")
 	public String saveCourse(@PathVariable("courseId") Long courseId, Model model) {
 		model.addAttribute("course", courseRepo.findById(courseId));
-		return "/savecourse";
+		return "savecourse";
 	}
 	
 
