@@ -34,19 +34,19 @@ public class HomeworkController {
 	//Welcome index page
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String Welcome() {
-		return "/welcome";
+		return "welcome";
 	}
 	
 	// Login
     @RequestMapping(value="/login")
     public String login() {	
-        return "/login";
+        return "login";
     }	
     
 	// User welcome page
     @RequestMapping(value="/welcome")
     public String UserWelcome() {	
-        return "/userWelcome";
+        return "userWelcome";
     }	
 	
 	//Listing Homework
