@@ -26,15 +26,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 			//voi nähdä kaikki kaikkien homeworkit, mutta ei muokata, poistaa yms niitä
 		
 		http
-	    .authorizeRequests().antMatchers("/css/**").permitAll() // Enable css when logged out
+	    .authorizeRequests().antMatchers("/css/**", "/", "/courses", "/h2-console/**").permitAll()
+	    .and().csrf().ignoringAntMatchers("/h2-console/**")
+	    .and().headers().frameOptions().sameOrigin()
 	    .and()
 	    .authorizeRequests()
-	    .antMatchers("/","courselist").permitAll()
 	    	.anyRequest().authenticated()
 	        .and()
 	        .formLogin()
 	            .loginPage("/login")
-	            .defaultSuccessUrl("/homeworklist")
+	            .defaultSuccessUrl("/welcome")
 	            .permitAll()
 	            .and()
 	        .logout()

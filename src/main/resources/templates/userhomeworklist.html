@@ -18,19 +18,20 @@
 			<th> Task </th>
 			<th> Deadline </th>
 			<th> Course </th>
-			<th> Owner </th>
 		</tr>
 		<tr th:each="homework : ${homeworks}">
 			<td th:text="${homework.homeId}">id</td>
 			<td th:text="${homework.task}">task</td>
 			<td th:text="${homework.deadline}">deadline</td>
 			<td th:text="${homework.course.name}">course</td>
-			<td th:text="${homework.owner}">owner</td>
+			<td><a  class="btn btn-danger" th:href="@{/deletehomework/{homeId}(homeId=${homework.homeId})}">Delete</a></td>
+			<td><a class="btn btn-primary" th:href="@{/savehomework/{homeId}(homeId=${homework.homeId})}">Edit</a></td>
 		</tr>
 	</table>
 	<br/>
 	<br/>
+	<a href="/savehomework" class="btn btn-primary">New Homework</a>
 	<a href="/courses" class="btn btn-primary">Courses</a>
-	<a sec:authorize="hasAuthority('ADMIN')" href="/userhomework" class="btn btn-primary">User homework</a>
+	<a sec:authorize="hasAuthority('ADMIN')" href="/homework" class="btn btn-primary">All homework</a>
 </body>
 </html>

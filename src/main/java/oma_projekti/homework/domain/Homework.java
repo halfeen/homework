@@ -1,6 +1,7 @@
 package oma_projekti.homework.domain;
 
 
+import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -23,7 +24,7 @@ public class Homework {
 	private Long homeId;
 	private String task;
 	private String deadline;
-	//owner
+	private String owner;
 	
 	@ManyToOne
 	@JoinColumn(name="course")
@@ -32,21 +33,28 @@ public class Homework {
 	public Homework() {
 		super();
 	}
+	
+	public String getUsername(Principal principal) {
+		String username = principal.getName();
+		return username;
+	}
 
-	public Homework(Long homeId, String task, String deadline, Course course) {
+	public Homework(Long homeId, String task, String deadline, Course course, String owner) {
 		super();
 		this.homeId = homeId;
 		this.task = task;
 		this.deadline = deadline;
 		this.course = course;
+		this.owner = owner;
 
 	}
 	
 	//konstruktori ilman id:tä
-	public Homework(String task, String deadline, Course course) {
+	public Homework(String task, String deadline, Course course, String owner) {
 		this.task = task;
 		this.deadline = deadline;
 		this.course = course;
+		this.owner = owner;
 	}
 
 	public Long getHomeId() {
@@ -63,6 +71,10 @@ public class Homework {
 
 	public Course getCourse() {
 		return course;
+	}
+	
+	public String getOwner() {
+		return owner;
 	}
 
 
@@ -81,10 +93,15 @@ public class Homework {
 	public void setCourse(Course course) {
 		this.course = course;
 	}
+	
+	public void setOwner(String owner) {
+		this.owner = owner;
+	}
+	
 
 	@Override
 	public String toString() {
-		return "Homework [homeId=" + homeId + ", task=" + task + ", deadline=" + deadline + ", course=" + course + "]";
+		return "Homework [homeId=" + homeId + ", task=" + task + ", deadline=" + deadline + ", course=" + course + ", student="+ owner + "]";
 	}
 	
 }

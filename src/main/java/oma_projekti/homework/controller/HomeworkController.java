@@ -1,10 +1,13 @@
 package oma_projekti.homework.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,71 +34,107 @@ public class HomeworkController {
 	//Welcome index page
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String Welcome() {
-		return "welcome";
+		return "/welcome";
 	}
 	
 	// Login
     @RequestMapping(value="/login")
     public String login() {	
-        return "login";
+        return "/login";
+    }	
+    
+	// User welcome page
+    @RequestMapping(value="/welcome")
+    public String UserWelcome() {	
+        return "/userWelcome";
     }	
 	
 	//Listing Homework
+    @PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/homework", method = RequestMethod.GET)
 	public String getHomework(Model model) {
 		model.addAttribute("homeworks", homeworkRepo.findAll());
-		return "homeworklist";
+		return "/homeworklist";
+	}
+	
+    //Check username
+    @RequestMapping(value = "/username", method = RequestMethod.GET)
+    @ResponseBody
+    public String currentUserName(Principal principal) {
+       return principal.getName();
+    }
+    
+	//User only sees their own homework
+	@RequestMapping(value="/userhomework", method = RequestMethod.GET)
+	public String getStudentHomework(Model model, Principal principal) {
+		String username = principal.getName(); //get logged in username, eli esim student1
+		model.addAttribute("homeworks", homeworkRepo.findByOwner(username));
+		return "/userhomeworklist";
 	}
 	
 	//Listing Courses
 	@RequestMapping(value = "/courses", method = RequestMethod.GET)
 	public String getCourses(Model model) {
 		model.addAttribute("courses", courseRepo.findAll());
-		return "courselist";
+		return "/courselist";
 	}
 	
 	//Add new homework
-	@RequestMapping(value="/savehomework", method = RequestMethod.GET)
+	/*@RequestMapping(value="/savehomework", method = RequestMethod.GET)
 	public String getNewHomeworkForm(Model model) {
-		model.addAttribute("homework", new Homework());
+		//String username = principal.getName();
+		model.addAttribute("homework", new Homework()); 
 		model.addAttribute("courses", courseRepo.findAll());
 		return "savehomework";
+		
+	}*/
+	
+	//Add new homework
+	@RequestMapping(value="/savehomework", method = RequestMethod.GET)
+	public String getNewHomeworkForm(Model model, Principal principal) {
+		String username = principal.getName();
+		model.addAttribute("owner", username);
+		model.addAttribute("homework", new Homework());
+		model.addAttribute("courses", courseRepo.findAll());
+		return "/savehomework";
 	}
 	
 	//Save the homework
 	@RequestMapping(value="/savehomework", method = RequestMethod.POST)
 	public String saveNewHomework(Homework homework) {
 		homeworkRepo.save(homework);
-		return "redirect:homework";
+		return "redirect:/userhomework";
 	}
 	
 	//Add new course
+    @PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value="/savecourse", method = RequestMethod.GET)
 	public String getNewCourseForm(Model model) {
 		model.addAttribute("course", new Course());
-		return "savecourse";
+		return "/savecourse";
 	}
 	
 	//Save the course
+    @PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value="/savecourse", method = RequestMethod.POST)
 	public String saveNewCourse(Course course) {
 		courseRepo.save(course);
-		return "redirect:courses";
+		return "redirect:/courses";
 	}
 	
 	//Deleting homework
 	@RequestMapping(value="/deletehomework/{homeId}", method = RequestMethod.GET)
 	public String deleteHomework(@PathVariable("homeId") Long homeId) {
 		homeworkRepo.deleteById(homeId);
-		return "redirect:../homework";
+		return "redirect:../userhomework";
 	}
 	
 	//Deleting a course
+    @PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value="/deletecourse/{courseId}", method = RequestMethod.GET)
 	public String deleteCourse(@PathVariable("courseId") Long courseId) {
 		courseRepo.deleteById(courseId);
 		return "redirect:../courses";
-		// TODO TÄHÄN PITÄÄ LISÄÄ JOKU VAROTUS --> poistaa myös kaikki sen kurssin läksyt
 	}
 	
 	//Editing homework
@@ -103,32 +142,21 @@ public class HomeworkController {
 	public String saveHomework(@PathVariable("homeId") Long homeId, Model model) {
 		model.addAttribute("homework", homeworkRepo.findById(homeId));
 		model.addAttribute("courses", courseRepo.findAll());
-		return "savehomework";
+		return "/savehomework";
 	}
 	
 	//Editing course
+    @PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value= "/savecourse/{courseId}")
 	public String saveCourse(@PathVariable("courseId") Long courseId, Model model) {
 		model.addAttribute("course", courseRepo.findById(courseId));
-		return "savecourse";
+		return "/savecourse";
 	}
+	
 
-	//random testikommentti
-	
-	//TODO jokaisen käyttäjän vain omien läksyjen listaus
 	
 	
-	/*//RESTful service to get Homework
-	@RequestMapping(value="/homework", method = RequestMethod.GET)
-	public @ResponseBody List<Homework> getHomeworkRest() {
-		return (List<Homework>) homeworkRepo.findAll();
-	}
-	
-	//RESTful service to save new homework
-	@RequestMapping(value = "/homework", method = RequestMethod.POST)
-	public @ResponseBody Homework saveHomeworkRest(@RequestBody Homework homework) {
-		return homeworkRepo.save(homework);
-	}*/
+
 
 }
 
