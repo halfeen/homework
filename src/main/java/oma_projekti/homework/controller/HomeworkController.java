@@ -126,7 +126,7 @@ public class HomeworkController {
 	@RequestMapping(value="/deletehomework/{homeId}", method = RequestMethod.GET)
 	public String deleteHomework(@PathVariable("homeId") Long homeId) {
 		homeworkRepo.deleteById(homeId);
-		return "redirect:..userhomework";
+		return "redirect:../userhomework";
 	}
 	
 	//Deleting a course
@@ -134,7 +134,7 @@ public class HomeworkController {
 	@RequestMapping(value="/deletecourse/{courseId}", method = RequestMethod.GET)
 	public String deleteCourse(@PathVariable("courseId") Long courseId) {
 		courseRepo.deleteById(courseId);
-		return "redirect:..courses";
+		return "redirect:../courses";
 	}
 	
 	//Editing homework

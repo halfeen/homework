@@ -26,6 +26,7 @@
 			<td th:text="${homework.deadline}">deadline</td>
 			<td th:text="${homework.course.name}">course</td>
 			<td th:text="${homework.owner}">owner</td>
+			<td><a  class="btn btn-danger" th:href="@{/deletehomework/{homeId}(homeId=${homework.homeId})}">Delete</a></td>
 		</tr>
 	</table>
 	<br/>
