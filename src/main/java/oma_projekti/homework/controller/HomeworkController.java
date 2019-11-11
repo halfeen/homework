@@ -7,10 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -47,39 +45,39 @@ public class HomeworkController {
     @RequestMapping(value="/welcome")
     public String UserWelcome() {	
         return "userWelcome";
-    }	
+    }
 	
-	//Listing Homework
+	//Listing complete list of Homework (every users homework)
     @PreAuthorize("hasAuthority('ADMIN')")
-	@RequestMapping(value = "/homework", method = RequestMethod.GET)
+	@RequestMapping(value = "/homeworklist", method = RequestMethod.GET)
 	public String getHomework(Model model) {
 		model.addAttribute("homeworks", homeworkRepo.findAll());
 		return "homeworklist";
 	}
 	
-    //Check username --> ei käytetä tällä hetkellä mihinkään
+    //Check username --> EI KÄYTÖSSÄ MIHINKÄÄN TÄLLÄ HETKELLÄ
     @RequestMapping(value = "/username", method = RequestMethod.GET)
     @ResponseBody
     public String currentUserName(Principal principal) {
        return principal.getName();
     }
     
-	//User only sees their own homework
-	@RequestMapping(value="/userhomework", method = RequestMethod.GET)
-	public String getStudentHomework(Model model, Principal principal) {
+	//User specific list of homework
+	@RequestMapping(value="/userhomeworklist", method = RequestMethod.GET)
+	public String getUsersHomework(Model model, Principal principal) {
 		String username = principal.getName(); //get logged in username, eli esim student1
 		model.addAttribute("homeworks", homeworkRepo.findByOwner(username));
 		return "userhomeworklist";
 	}
 	
 	//Listing Courses
-	@RequestMapping(value = "/courses", method = RequestMethod.GET)
-	public String getCourses(Model model) {
+	@RequestMapping(value = "/courselist", method = RequestMethod.GET)
+	public String getCourselist(Model model) {
 		model.addAttribute("courses", courseRepo.findAll());
 		return "courselist";
 	}
 	
-	//Add new homework --> yksi monesta yrityksestä saada owner automaattisesti lisättyä
+	//Add new homework --> yksi monesta yrityksestä saada owner automaattisesti lisättyä homeworkkiin
 	// Lisää löytyy Homework-luokasta
 	
 		/*@RequestMapping(value="/savehomework", method = RequestMethod.GET)
@@ -105,7 +103,7 @@ public class HomeworkController {
 	@RequestMapping(value="/savehomework", method = RequestMethod.POST)
 	public String saveNewHomework(@ModelAttribute Homework homework) {
 		homeworkRepo.save(homework);
-		return "redirect:userhomework";
+		return "redirect:userhomeworklist";
 	}
 	
 	//Add new course
@@ -121,28 +119,36 @@ public class HomeworkController {
 	@RequestMapping(value="/savecourse", method = RequestMethod.POST)
 	public String saveNewCourse(@ModelAttribute Course course) {
 		courseRepo.save(course);
-		return "redirect:courses";
+		return "redirect:courselist";
 	}
 	
-	//Deleting homework --> jos adminilla poistaa koko listasta jotain, niin silloinkin
-    //redirectaa userhomeworkiin...
+	//Deleting user homework
+	@RequestMapping(value="/deleteuserhomework/{homeId}", method = RequestMethod.GET)
+	public String deleteUserHomework(@PathVariable("homeId") Long homeId) {
+		homeworkRepo.deleteById(homeId);
+		return "redirect:../userhomeworklist";
+	}
+	
+	//Delete homework from complete list
+    @PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value="/deletehomework/{homeId}", method = RequestMethod.GET)
 	public String deleteHomework(@PathVariable("homeId") Long homeId) {
 		homeworkRepo.deleteById(homeId);
-		return "redirect:../userhomework";
+		return "redirect:../homeworklist";
 	}
+	
 	
 	//Deleting a course
     @PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value="/deletecourse/{courseId}", method = RequestMethod.GET)
 	public String deleteCourse(@PathVariable("courseId") Long courseId) {
 		courseRepo.deleteById(courseId);
-		return "redirect:../courses";
+		return "redirect:../courselist";
 	}
 	
 	//Editing homework --> jostain syystä luo silti uuden
 	@RequestMapping(value= "/savehomework/{homeId}")
-	public String saveHomework(@PathVariable("homeId") Long homeId, Model model) {
+	public String editHomework(@PathVariable("homeId") Long homeId, Model model) {
 		model.addAttribute("homework", homeworkRepo.findById(homeId));
 		model.addAttribute("courses", courseRepo.findAll());
 		return "savehomework";
@@ -151,11 +157,42 @@ public class HomeworkController {
 	//Editing course --> luo myös uuden
     @PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value= "/savecourse/{courseId}")
-	public String saveCourse(@PathVariable("courseId") Long courseId, Model model) {
+	public String editCourse(@PathVariable("courseId") Long courseId, Model model) {
 		model.addAttribute("course", courseRepo.findById(courseId));
 		return "savecourse";
 	}
+    
+    
+    
+    
+ 
+    
+    
+    // ***REST-services***
+    
+	//Home page of REST services
+	@RequestMapping(value="/resthomepage", method = RequestMethod.GET)
+	public String getRestHome() {
+		return "resthomepage";
+	}
+    
+    //RESTful service to get all homework
+	@RequestMapping(value = "/homeworks", method = RequestMethod.GET)
+	public @ResponseBody List<Homework> getHomeworkRest() {
+		return (List<Homework>) homeworkRepo.findAll();
+	}
 	
+    //RESTful service to get all courses
+	@RequestMapping(value = "/courses", method = RequestMethod.GET)
+	public @ResponseBody List<Course> getCourseRest() {
+		return (List<Course>) courseRepo.findAll();
+	}
+	
+	//RESTful service to get homework by owner
+	@RequestMapping(value="/homeworks/{owner}", method = RequestMethod.GET)
+	public @ResponseBody List<Homework> getHomeworkRest(@PathVariable("owner") String owner) {
+		return homeworkRepo.findByOwner(owner);
+	}
 
 	
 	

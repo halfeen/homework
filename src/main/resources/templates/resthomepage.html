@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>REST Home Page</title>
+	</head>
+	<body>
+		<h1>REST Home Page</h1>
+			<h2>Homework of every Student</h2>
+			<p>
+				<strong>Method:</strong> GET <strong>Endpoint:</strong> <strong>
+				<a href="/homeworks">/homeworks</a></strong>
+			</p>
+			<p><strong>JSON Example:</strong></p>
+			<pre><code>
+[
+  {
+    homeId: 6,
+    task: "Harjoitustehtävä 3",
+    deadline: "26.12.",
+    owner: "student1",
+    course: {
+	   courseId: 3,
+	   name: "Matikka"
+    }
+  },
+  {
+    homeId: 7,
+    task: "Tehtävä 1",
+    deadline: "10.11",
+    owner: "student2",
+    course: {
+	   courseId: 3,
+	   name: "Matikka"
+    }
+  }
+]
+			</code></pre>
+			<h2>Homework of one Student by username</h2>
+			<p>
+				<strong>GET </strong><strong> /homeworks/{username} </strong> <strong>
+				<a href="/homeworks/student1">/homeworks/student1</a></strong>
+			</p>
+			<p>
+				<strong>JSON Example:</strong>
+			</p>
+			<pre><code>
+[
+  {
+    homeId: 5,
+    task: "Tee ohjelma loppuun",
+    deadline: "26.12.",
+    owner: "student1",
+    course: {
+	   courseId: 2,
+	   name: "Frontti"
+	}
+  },
+  {
+    homeId: 6,
+    task: "Harjoitustehtävä 3",
+    deadline: "26.12.",
+    owner: "student1",
+    course: {
+	   courseId: 3,
+	   name: "Matikka"
+	}
+  }
+]
+			</code></pre>
+			<h2>List of all Courses</h2>
+			<p>
+				<strong>Method:</strong> GET <strong>Endpoint:</strong> <strong>
+				<a href="/courses">/courses</a></strong>
+			</p>
+			<p><strong>JSON Example:</strong></p>
+			<pre><code>
+[
+  {
+    courseId: 2,
+    name: "Frontti"
+  },
+  {
+    courseId: 3,
+    name: "Matikka"
+  },
+  {
+    courseId: 15,
+    name: "Uusi kurssi"
+  }
+]
+			</code></pre>
+
+	</body>
+</html>

@@ -40,7 +40,7 @@ public class HomeworkApplication {
 			//Creating students --> password always same as username
 			Student student1 = new Student("student1", "$2a$10$o.UUfisnRlr5fk0Oe6ARbOrkLlsqPXLFq46KQw9prpBFOLe.hDsbC","USER");
 			Student student2 = new Student("student2","$2a$10$0Yg87yDoC955PyFDOJKFi.1zLoHz7T4VeguX/fZWOk6NrBo44yo2K", "USER");
-			Student student3 = new Student("studentadmin", "$2a$10$8iK7UJEXZoG4Yga9hTj4j.HZjgwVqI7IuOhmMB9J22BO18P97iWcS", "ADMIN");
+			Student student3 = new Student("admin", "$2b$10$7IfrKcUniW4iLTjXVORuGebGXmdw/XIk3yJmFKJL6bBrf98Sx7iFS", "ADMIN");
 			
 			studentRepo.save(student1);
 			studentRepo.save(student2);
@@ -54,9 +54,9 @@ public class HomeworkApplication {
 			homeRepo.save(new Homework("Tehtävä 2", "10.11", kurssi3, "student2"));
 			homeRepo.save(new Homework("Tehtävä 3", "10.11", kurssi3, "student2"));
 			homeRepo.save(new Homework("Tehtävä 4", "10.11", kurssi3, "student2"));
-			homeRepo.save(new Homework("Unity-hommia", "31.12", kurssi1, "studentadmin"));
-			homeRepo.save(new Homework("Frontti-projketi loppuun", "31.12", kurssi2, "studentadmin"));
-			homeRepo.save(new Homework("Matikan tehtävä 4", "31.12", kurssi3, "studentadmin"));
+			homeRepo.save(new Homework("Unity-hommia", "31.12", kurssi1, "admin"));
+			homeRepo.save(new Homework("Frontti-projketi loppuun", "31.12", kurssi2, "admin"));
+			homeRepo.save(new Homework("Matikan tehtävä 4", "31.12", kurssi3, "admin"));
 			
 
 			

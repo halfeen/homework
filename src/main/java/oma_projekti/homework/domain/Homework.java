@@ -2,9 +2,6 @@ package oma_projekti.homework.domain;
 
 
 import java.security.Principal;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

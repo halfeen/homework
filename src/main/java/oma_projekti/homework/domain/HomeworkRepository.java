@@ -1,6 +1,6 @@
 package oma_projekti.homework.domain;
 
-import java.security.Principal;
+//import java.security.Principal;
 import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
