@@ -146,7 +146,7 @@ public class HomeworkController {
 		return "redirect:../courselist";
 	}
 	
-	//Editing homework --> jostain syystä luo silti uuden
+	//Editing homework
 	@RequestMapping(value= "/savehomework/{homeId}")
 	public String editHomework(@PathVariable("homeId") Long homeId, Model model) {
 		model.addAttribute("homework", homeworkRepo.findById(homeId));
@@ -154,7 +154,7 @@ public class HomeworkController {
 		return "savehomework";
 	}
 	
-	//Editing course --> luo myös uuden
+	//Editing course
     @PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value= "/savecourse/{courseId}")
 	public String editCourse(@PathVariable("courseId") Long courseId, Model model) {

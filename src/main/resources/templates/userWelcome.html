@@ -6,16 +6,11 @@
 	    <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" />
 	</head>
 	<body>
-	<div class="col-md-4" style="padding:20px 0">
-		<form th:action="@{/logout}" method="post">
-			<input type="submit" value="Sign Out" class="btn btn-danger"/>
-		</form>
-	</div>
-		<h1>Welcome!</h1>    
+		<h1>Welcome [[${#httpServletRequest.remoteUser}]]!</h1>    
 	</body>
 	<br/>
 	<br/>
 	<a href="/userhomeworklist" class="btn btn-primary">Your homework</a>
-	<a href="/courselist" class="btn btn-primary">Courses</a>
-	<a sec:authorize="hasAuthority('ADMIN')" href="/homeworklist" class="btn btn-primary">All homework</a>
+	<a href="/courselist" class="btn btn-secondary">Courses</a>
+	<a sec:authorize="hasAuthority('ADMIN')" href="/homeworklist" class="btn btn-info">All homework</a>
 </html>

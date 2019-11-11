@@ -19,19 +19,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
-		//course avoin kaikille, ei vaadi kirjautumista
-		//homework vain x-homeworkin luojalle
-		//admin
-			//voi muokata, lisätä ja poistaa courseja
-			//voi nähdä kaikki kaikkien homeworkit, mutta ei muokata, poistaa yms niitä
-		
 		http
-	    .authorizeRequests().antMatchers("/css/**", "/", "/courses", "/h2-console/**").permitAll()
+	    .authorizeRequests().antMatchers("/css/**", "/", "/courses", "/h2-console/**").permitAll() 
+	    //h2-console kaikille näkyvissä (tässä tilanteessa varmaan ok, mutta tiedän, että "oikeassa"-ohjelmassa ei missään nimessän saisi olla
 	    .and().csrf().ignoringAntMatchers("/h2-console/**")
 	    .and().headers().frameOptions().sameOrigin()
 	    .and()
 	    .authorizeRequests()
-	    	.anyRequest().authenticated()
+	    	.antMatchers("/userWelcome", "/courselist", "/courses").permitAll()
+	    	//kaikki kirjautuneet käyttäjät voivat myös restinä katsoa kurssilistaa, mutta vain admin läksylistoja
+	    	.antMatchers("/homeworklist", "/savecourse", "/deletehomework/{homeId}", "/deletecourse/{courseId}", "/savecourse/{courseId}", "/resthomepage", "/homeworks", "/homeworks/{owner}").hasAuthority("ADMIN")
+	    		.anyRequest().authenticated()
 	        .and()
 	        .formLogin()
 	            .loginPage("/login")

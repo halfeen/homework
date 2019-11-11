@@ -6,11 +6,6 @@
     <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" />
 </head>
 <body>
-	<div class="col-md-4" style="padding:20px 0">
-		<form th:action="@{/logout}" method="post">
-			<input type="submit" value="Sign Out" class="btn btn-danger"/>
-		</form>
-	</div>
 	<h1>Courses</h1>
 	<div>
 		<table class="table table-striped">
@@ -28,8 +23,8 @@
 	</div>
 	<br/>
 	<br/>
-	<a sec:authorize="hasAuthority('ADMIN')" href="/savecourse" class="btn btn-primary">Add course</a>
+	<a sec:authorize="hasAuthority('ADMIN')" href="/savecourse" class="btn btn-secondary">Add course</a>
 	<a href="/userhomeworklist" class="btn btn-primary">Your homework</a>
-	<a sec:authorize="hasAuthority('ADMIN')" href="/homeworklist" class="btn btn-primary">All homework</a>
+	<a sec:authorize="hasAuthority('ADMIN')" href="/homeworklist" class="btn btn-info">All homework</a>
 </body>
 </html>
