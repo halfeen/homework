@@ -3,7 +3,7 @@
 <head>
     <title>Course</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" />
+	<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
 </head>
 <body>
 	<h1>Course</h1>
@@ -12,10 +12,10 @@
 		<p>Name: <input type="text" th:field="${course.name}"/></p>
 		
 		<div style="clear: both; display: block; height: 10px;"></div>
-		<input type="submit" value="Save" class="btn btn-success"/>
+		<input type="submit" value="Save" class="btn btn-primary"/>
 		<input type="reset" value="Reset" class="btn btn-primary"/>
 	</form>
 
     
 </body>
-</html>
+</html> 
